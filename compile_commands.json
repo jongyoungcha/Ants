@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/Users/joyeongchan/projects/Ants/datastructures",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/cc  -Dants_datas_EXPORTS -I/Users/joyeongchan/projects/Ants/datastructures/.  -g -fPIC   -o CMakeFiles/ants_datas.dir/ants_list.c.o   -c /Users/joyeongchan/projects/Ants/datastructures/ants_list.c",
+  "file": "/Users/joyeongchan/projects/Ants/datastructures/ants_list.c"
+},
+{
+  "directory": "/Users/joyeongchan/projects/Ants/datastructures",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/cc  -Dants_datas_EXPORTS -I/Users/joyeongchan/projects/Ants/datastructures/.  -g -fPIC   -o CMakeFiles/ants_datas.dir/ants_map.c.o   -c /Users/joyeongchan/projects/Ants/datastructures/ants_map.c",
+  "file": "/Users/joyeongchan/projects/Ants/datastructures/ants_map.c"
+}
+]

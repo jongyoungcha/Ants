@@ -7,8 +7,8 @@
 typedef struct ants_node
 {
   void* data;
-  struct ants_node_t* next;
-  struct ants_node_t* prev;
+  struct ants_node* next;
+  struct ants_node* prev;
   
 } ants_node_t;
 
@@ -17,7 +17,7 @@ typedef struct ants_list
 {
   ants_node_t* head;
   ants_node_t* tail;
-  int (*comapre)(void*, void*);
+  int (*pcomapre)(void*, void*);
   
 } ants_list_t;
 

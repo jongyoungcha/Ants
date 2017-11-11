@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/joyeongchan/projects/Ants/datastructures/ants_list.c
+ants_list.h
+/Users/joyeongchan/projects/Ants/datastructures/ants_list.h
+
+/Users/joyeongchan/projects/Ants/datastructures/ants_list.h
+stdio.h
+-
+stdlib.h
+-
+
+/Users/joyeongchan/projects/Ants/datastructures/ants_map.c
+

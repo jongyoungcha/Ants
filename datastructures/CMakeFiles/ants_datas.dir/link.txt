@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/cc  -g -dynamiclib -Wl,-headerpad_max_install_names  -o libants_datas.dylib -install_name @rpath/libants_datas.dylib CMakeFiles/ants_datas.dir/ants_list.c.o CMakeFiles/ants_datas.dir/ants_map.c.o 
