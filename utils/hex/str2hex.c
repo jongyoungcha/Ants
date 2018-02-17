@@ -6,16 +6,16 @@ int ants_ch2hex(unsigned char ch, char* chs_hex)
 
     if (chs_hex == NULL)
     {
-	return -1;
+		return -1;
     }
 
     if (0 < ch && ch < 255)
     {
-	sprintf(chs_hex, "%x", ch);
+		sprintf(chs_hex, "%x", ch);
     }
     else
     {
-	return -1;
+		return -1;
     }
     
     return ret;
@@ -27,35 +27,35 @@ int ants_str2hex(char* str, char* str_hex, int len_limit, char* delimit)
     int ret = 0;
     int len_hex = 0;
     
-    char* offs_str = NULL;
+    unsigned char* offs_str = NULL;
 
     if (str == NULL || str_hex == NULL || len_limit <= 0)
     {
-	/* fprintf(stderr, "checking error\n"); */
-	return  -1;
+		/* fprintf(stderr, "checking error\n"); */
+		return  -1;
     }
 
-    for (offs_str = str;
-	 *offs_str != '\0';
-	 offs_str++)
+    for (offs_str = (unsigned char*)str;
+		 *offs_str != '\0';
+		 offs_str++)
     {
-	if (++len_hex > len_limit)
-	{
-	    /* fprintf(stderr, "Length of hex was longer than limit.\n"); */
-	    return -1;
-	}
+		if (++len_hex > len_limit)
+		{
+			/* fprintf(stderr, "Length of hex was longer than limit.\n"); */
+			return -1;
+		}
 	
-	sprintf(str_hex + strlen(str_hex), "%x", *offs_str);
+		sprintf(str_hex + strlen(str_hex), "%x", *offs_str);
 	
-	if (delimit)
-	{
-	    if (( len_hex += strlen(delimit )) > len_limit)
-	    {
-	        return -1;
-	    }
+		if (delimit)
+		{
+			if (( len_hex += strlen(delimit )) > len_limit)
+			{
+				return -1;
+			}
 	    
-	    sprintf(str_hex + strlen(str_hex), "%s", delimit);
-	}
+			sprintf(str_hex + strlen(str_hex), "%s", delimit);
+		}
     }
 
     return ret;
