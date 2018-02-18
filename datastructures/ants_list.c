@@ -1,5 +1,46 @@
 #include "ants_list.h"
 
+int ants_str2hex(char* str, char* str_hex, int limit_str_hex, char* delimit)
+{
+    int ret = 0;
+    int len_hex = 0;
+    
+    unsigned char* offs_str = NULL;
+
+    if (str == NULL || str_hex == NULL || limit_str_hex <= 0)
+    {
+		/* fprintf(stderr, "checking error\n"); */
+		return  -1;
+    }
+
+	memset(str_hex, 0x00, limit_str_hex);
+
+    for (offs_str = (unsigned char*)str;
+		 *offs_str != '\0';
+		 offs_str++)
+    {
+		if (++len_hex > limit_str_hex)
+		{
+			/* fprintf(stderr, "Length of hex was longer than limit.\n"); */
+			return -1;
+		}
+	
+		sprintf(str_hex + strlen(str_hex), "%02x", *offs_str);
+	
+		if (delimit)
+		{
+			if (( len_hex += strlen(delimit )) > limit_str_hex)
+			{
+				return -1;
+			}
+	    
+			sprintf(str_hex + strlen(str_hex), "%s", delimit);
+		}
+    }
+
+    return ret;
+}
+
 
 int ants_list_compare_default(void* data_prev, void* data_next)
 {
@@ -50,27 +91,28 @@ int ants_list_add_head(ants_list_t* list, void* data, int len_data)
     int ret = 0;
     ants_node_t* node_new = NULL;
 
-	printf("called!!!\n");
-
     if (!list || !data || len_data == 0)
     {
 		return -1;
     }
 
-	printf("test1");
-
     node_new = malloc(sizeof(ants_node_t));
-    node_new->data = data;
+	memset(node_new, 0x00, sizeof(ants_node_t));
+	
+	node_new->data = malloc(len_data);
+	memset(node_new->data, 0x00, len_data);
+    memcpy(node_new->data, data, len_data);
+	
 	node_new->len_data = len_data;
+	
     node_new->next = NULL;
     node_new->prev = NULL;
-
-	printf("test2");
 
     if (list->head)
     {
 		list->head->prev = node_new;
 		node_new->next = list->head;
+
 		list->head = node_new;
     }
     else
@@ -90,15 +132,20 @@ int ants_list_add_tail(ants_list_t* list, void* data, int len_data)
     int ret = 0;
     ants_node_t* node_new = NULL;
 
-    if (!list)
+	if (!list || !data || len_data == 0)
     {
 		return -1;
     }
 
     node_new = malloc(sizeof(ants_node_t));
-
-    node_new->data = data;
+	memset(node_new, 0x00, sizeof(ants_node_t));
+	
+	node_new->data = malloc(len_data);
+	memset(node_new->data, 0x00, len_data);
+    memcpy(node_new->data, data, len_data);
+	
 	node_new->len_data = len_data;
+	
     node_new->next = NULL;
     node_new->prev = NULL;
 
@@ -106,6 +153,7 @@ int ants_list_add_tail(ants_list_t* list, void* data, int len_data)
     {
 		list->tail->next = node_new;
 		node_new->prev = list->tail;
+		
 		list->tail = node_new;
     }
     else
@@ -119,6 +167,32 @@ int ants_list_add_tail(ants_list_t* list, void* data, int len_data)
     return ret;
 }
 
+int ants_list_show(ants_list_t* list)
+{
+	ants_node_t* node_curr = NULL;
+	char buff_hex[8192] ={0};
+	int index = 0;
+
+	if (list->cnt_nodes == 0)
+	{
+		fprintf(stderr, "The list was empty\n");
+		return -1;
+	}
+
+	fprintf(stdout, "[%s] list count : %d\n", __func__, list->cnt_nodes);
+
+	for (node_curr=list->head; node_curr; node_curr=node_curr->next)
+	{
+		buff_hex[0] = '\0';
+		memset(buff_hex, 0x00, sizeof(buff_hex));
+		ants_str2hex(node_curr->data, buff_hex, sizeof(buff_hex), " ");
+		fprintf(stdout, "[%d] %s, %d\n", index, node_curr->data, node_curr->len_data);
+		fprintf(stdout, "[%d] %s\n", index++, buff_hex);
+	}
+	
+	return 0;
+}
+
 
 int ants_list_find(ants_list_t* list, void* data, int len_data)
 {
@@ -128,7 +202,7 @@ int ants_list_find(ants_list_t* list, void* data, int len_data)
 
 	if (!list || !data)
 	{
-		fprintf(stderr, "[%s] %s\n", __func__, data);
+		fprintf(stderr, "[%s] %s\n", __func__, "Arguments were invalied...\n");
 		return -1;
 	}
 
@@ -157,9 +231,67 @@ int ants_list_find(ants_list_t* list, void* data, int len_data)
 }
 
 
-int ants_list_pop_from_head(ants_list_t* list, ants_node_t* ants_node)
+ants_node_t* ants_list_pop_head(ants_list_t* list)
 {
+	ants_node_t* node_ret = NULL;
 	
+	if (list == NULL)
+	{
+		fprintf(stderr, "[%s] %s\n", __func__, "Arguments were invalied...\n");
+		return NULL;
+	}
+
+	if (list->head == NULL)
+	{
+		fprintf(stderr, "[%s] %s\n", __func__, "The list was empty...\n");
+		return NULL;
+	}
+
+	node_ret = list->head;
+
+	if (list->head->next)
+	{
+		list->head = list->head->next;
+		list->head->prev = NULL;
+	}
+	else
+	{
+		list->head = NULL;
+		list->tail = NULL;
+	}
+
+	return node_ret;
+}
+
+
+ants_node_t* ants_list_pop_tail(ants_list_t* list)
+{
+	ants_node_t* node_ret = NULL;
 	
-	return -1;
+	if (!list)
+	{
+		fprintf(stderr, "[%s] %s\n", __func__, "Arguments were invalied...\n");
+		return NULL;
+	}
+
+	if (list->tail == NULL)
+	{
+		fprintf(stderr, "[%s] %s\n", __func__, "The list wes empty...\n");
+		return NULL;
+	}
+
+	node_ret = list->tail;
+
+	if (list->tail->prev)
+	{
+		list->tail = list->tail->prev;
+		list->tail->next = NULL;
+	}
+	else
+	{
+		list->head = NULL;
+		list->tail = NULL;
+	}
+	
+	return node_ret;
 }

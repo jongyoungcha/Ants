@@ -25,6 +25,7 @@ typedef struct ants_list
   
 } ants_list_t;
 
+int ants_str2hex(char* str, char* str_hex, int len_limit, char* delimit);
 int ants_list_comapre_default(void* data_prev, void* data_next);
 ants_list_t* ants_list_new(int (*fpcompare)(void* data_prev, void* data_next));
 
@@ -36,6 +37,8 @@ ants_node_t* ants_list_pop_tail(ants_list_t* list);
 
 ants_node_t* ants_list_read_head(ants_list_t* list);
 ants_node_t* ants_list_read_tail(ants_list_t* list);
+
+int ants_list_show(ants_list_t* list);
 
 int ants_list_find(ants_list_t* list, void* data, int len_data);
 
