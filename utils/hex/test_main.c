@@ -9,7 +9,6 @@ int main(){
     
     char* str_origin="test test message\n";
     char str_hex[8192] = {0};
-
     ants_ch2hex(ch_origin, chs_hex);
     printf("hex : %s\n", chs_hex);
  
@@ -22,12 +21,10 @@ int main(){
     
     if(ants_str2hex(str_origin, str_hex, 8192, "||") == -1)
     {
-	printf("failed...\n");
+		printf("failed...\n");
     }
 
     printf("hex : %s\n", str_hex);
     
     return ret;
 }
-
-

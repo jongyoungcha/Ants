@@ -42,8 +42,7 @@ int ants_list_show(ants_list_t* list);
 
 int ants_list_find(ants_list_t* list, void* data, int len_data);
 
-ants_list_t* ants_list_remove(void* data);  
+ants_list_t* ants_list_remove(void* data);
 
 
 #endif
-

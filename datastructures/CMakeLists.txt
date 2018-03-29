@@ -8,12 +8,16 @@ project (ants)
 include_directories(./)
 file(GLOB SOURCES
 		  ants_list.c
-		  ants_map.c)
+		  ants_map.c
+		  ants_sort.c)
 
 add_library(ants_datas STATIC ${SOURCES})
 set_target_properties(ants_datas PROPERTIES DEBUG_POSTFIX "d")
 
 add_executable(ants_list_test ants_list_test.c)
+add_executable(ants_sort_test ants_sort_test.c)
+
 target_link_libraries(ants_list_test ants_datas)
+target_link_libraries(ants_sort_test ants_datas)
 
 

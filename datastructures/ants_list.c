@@ -288,7 +288,7 @@ ants_node_t* ants_list_pop_tail(ants_list_t* list)
 		list->tail->next = NULL;
 	}
 	else
-	{
+ 	{
 		list->head = NULL;
 		list->tail = NULL;
 	}
