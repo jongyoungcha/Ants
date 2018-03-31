@@ -96,9 +96,8 @@ int ants_list_add_head(ants_list_t* list, void* data, int len_data)
 		return -1;
     }
 
-    node_new = malloc(sizeof(ants_node_t));
-	memset(node_new, 0x00, sizeof(ants_node_t));
-	
+	init_ants_node(&node_new, data, len_data);
+
 	node_new->data = malloc(len_data);
 	memset(node_new->data, 0x00, len_data);
     memcpy(node_new->data, data, len_data);
@@ -137,8 +136,7 @@ int ants_list_add_tail(ants_list_t* list, void* data, int len_data)
 		return -1;
     }
 
-    node_new = malloc(sizeof(ants_node_t));
-	memset(node_new, 0x00, sizeof(ants_node_t));
+	init_ants_node(&node_new, data, len_data);
 	
 	node_new->data = malloc(len_data);
 	memset(node_new->data, 0x00, len_data);

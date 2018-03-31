@@ -4,17 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-
-
-typedef struct ants_node
-{
-	void* data;
-	int len_data;
-	struct ants_node* next;
-	struct ants_node* prev;
-  
-} ants_node_t;
-
+#include <ants_common.h>
 
 typedef struct ants_list
 {
@@ -24,6 +14,7 @@ typedef struct ants_list
 	int (*fpcompare)(void*, void*);
   
 } ants_list_t;
+
 
 int ants_str2hex(char* str, char* str_hex, int len_limit, char* delimit);
 int ants_list_comapre_default(void* data_prev, void* data_next);

@@ -9,7 +9,8 @@ include_directories(./)
 file(GLOB SOURCES
 		  ants_list.c
 		  ants_map.c
-		  ants_sort.c)
+		  ants_sort.c
+		  ants_common.c)
 
 add_library(ants_datas STATIC ${SOURCES})
 set_target_properties(ants_datas PROPERTIES DEBUG_POSTFIX "d")
