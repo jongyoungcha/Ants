@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 typedef struct ants_node
 {
 	void* data;

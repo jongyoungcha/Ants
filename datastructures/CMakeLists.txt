@@ -17,8 +17,11 @@ set_target_properties(ants_datas PROPERTIES DEBUG_POSTFIX "d")
 
 add_executable(ants_list_test ants_list_test.c)
 add_executable(ants_sort_test ants_sort_test.c)
+add_executable(ants_map_test ants_map_test.c)
 
 target_link_libraries(ants_list_test ants_datas)
 target_link_libraries(ants_sort_test ants_datas)
+target_link_libraries(ants_map_test ants_datas)
+target_link_libraries(ants_map_test crypto)
 
 

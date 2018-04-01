@@ -7,7 +7,7 @@ int main(){
     char ch_origin = 'a';
     char chs_hex[2];
     
-    char* str_origin="test test message\n";
+    char* str_origin="test test message";
     char str_hex[8192] = {0};
     ants_ch2hex(ch_origin, chs_hex);
     printf("hex : %s\n", chs_hex);
