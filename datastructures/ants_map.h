@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <openssl/md5.h>
 
 
@@ -16,10 +17,13 @@
 
 typedef struct ants_map_node
 {
-	int key;
+	unsigned char* key;
+	int check_sum;
 	void* data;
+	int len_data;
 	struct ants_map_node* left;
-	struct ants_map_ndoe* right;
+	struct ants_map_node* right;
+	
 } ants_map_node_t;
 
 
@@ -28,18 +32,19 @@ typedef struct ants_map
 	int cnt_nodes;
 	ants_map_node_t* root;
 	int (*cb_comapre)(void* data1, void* data2);
-} ants_map_t;
 	
+} ants_map_t;
 
 int ants_map_compare_default(void* data_prev, void* data_next);
 
+
 ants_map_t* ants_map_new(int (*fcompare)(void* data_prev, void* data_next));
-unsigned char* ants_map_get_key(const void* data, const int len);
+unsigned char* ants_map_get_key(const void* data, const int len_data, int* len_md5);
 
-int ants_map_push_with_data(ants_map_t* map, void* data, int len_data);
-int ants_map_push_with_node(ants_map_t* map, ants_map_node_t* node);
+int ants_map_insert(ants_map_t* map, void* data, const int len);
+int ants_map_insert_leftorder(ants_map_node_t* map, ants_map_node_t* node);
 
-int ants_map_find_with_data(ants_map_t* map, void* data, int len_data);
+int ants_map_search_with_data(ants_map_t* map, const void* data, const int len);
 int ants_map_find_with_node(ants_map_t* map, ants_map_node_t* node);
 
 
