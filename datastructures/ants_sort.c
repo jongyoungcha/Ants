@@ -11,7 +11,6 @@ void quick_sort(int arr[], int left, int right)
 	j = right;
 	pivot = arr[(left + right) / 2];
 
-
 	do
 	{
 		while (arr[i] < pivot)

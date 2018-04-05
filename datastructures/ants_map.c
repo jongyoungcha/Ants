@@ -9,9 +9,18 @@ int ants_map_compare_default(void* data_prev, void* data_next)
 	checksum1 = (int)data_prev;
 	checksum2 = (int)data_next;
 
-	printf("comparing : %d with %d", checksum1, checksum2);
-	
-	return 0;
+	if (checksum1 > checksum2)
+	{
+		return 1;
+	}
+	else if (checksum1 < checksum2)
+	{
+		return 2;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 
@@ -60,10 +69,11 @@ ants_map_node_t* ants_map_node_new(void* data, int len)
 	int len_md5 = 0;
 	int i = 0;
 
-	node_new = malloc(sizeof(ants_map_t));
-	memset(node_new, 0x00, sizeof(ants_map_t));
+	node_new = malloc(sizeof(ants_map_node_t));
+	memset(node_new, 0x00, sizeof(ants_map_node_t));
 	
 	node_new->data = malloc(len);
+	memset(node_new->data, 0x00, len);
 
 	memcpy(node_new->data, data, len);
 	node_new->len_data = len;
@@ -90,9 +100,29 @@ ants_map_node_t* ants_map_node_new(void* data, int len)
 		}
 		printf("\n");
 	}
-	
+
 	node_new->left = NULL;
 	node_new->right = NULL;
+
+	/* st_temp_t* temp = node_new->data; */
+	/* for(i=0; i<len; i++){ */
+	/* 	printf("%02x ", (unsigned char)((node_new->data)+i)); */
+	/* } */
+	/* printf("\n"); */
+
+	/* printf("=============\n"); */
+	/* printf("@@%d\n", temp->num); */
+	/* printf("@@%s\n", temp->name); */
+
+	/* for(i=0; i<len; i++){ */
+	/* 	printf("%02x ", (unsigned char)((node_new->data)+i)); */
+	/* } */
+	/* printf("\n"); */
+
+	/* printf("=============\n"); */
+	/* printf("@@%d\n", temp->num); */
+	/* printf("@@%s\n", temp->name); */
+
 
 	return node_new;
 }
@@ -113,7 +143,6 @@ int ants_map_node_free(ants_map_node_t** node)
 int ants_map_insert(ants_map_t* map, void* data, const int len)
 {
 	int ret = 0;
-	int i = 0;
 	ants_map_node_t* node_new = NULL;
 	/* ants_map_node_t* node_crr = NULL; */
 	
@@ -124,6 +153,17 @@ int ants_map_insert(ants_map_t* map, void* data, const int len)
 	}
 	
 	node_new = ants_map_node_new(data, len);
+
+	st_temp_t* temp = data;
+	/* printf("=============\n"); */
+	/* printf("outer1 : %d\n", temp->num); */
+	/* printf("outer1 : %s\n", temp->name); */
+
+	temp = node_new->data;
+	printf("=============\n");
+	printf("#### : %d\n", temp->num);
+	printf("#### : %s\n", temp->name);
+		
 	if (node_new)
 	{
 		if(!map->root)
@@ -196,38 +236,105 @@ int ants_map_insert_leftorder(ants_map_node_t* node_crr, ants_map_node_t* node_t
 }
 
 
+ants_map_node_t* ants_map_get_root(ants_map_t* map)
+{
+	if (map && map->root) return map->root;
+	else                  return NULL;
+}
+
+
 int ants_map_search_with_data(ants_map_t* map, const void* data, const int len_data)
 {
+	ants_map_node_t* node_crr = NULL;
+	if (map && map->root)
+	{
+		
+	}
 	
 	return 0;
 }
 
 
-int ants_map_find_with_node(ants_map_t* map, ants_map_node_t* node)
+int ants_map_find_with_node(ants_map_t* map, ants_map_node_t* node_finding)
 {
-	return 0;
+	int ret = 0;
+	if (map && map->root && node_finding)
+	{
+		ret = ants_map_walk_compare(node_finding, map->root, map->cb_comapre);
+		if (ret == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			return -1;
+		}
+	}
+	else
+	{
+		return -1;
+	}
 }
 
 
-int ants_map_walk(ants_map_node_t* node)
+int ants_map_walk(ants_map_t* map, void (*pfunc)(void*))
 {
-	if (!node)
+	ants_map_node_t* node_crr = NULL;
+	if (map && map->root)
+	{
+		node_crr = map->root;
+		ants_map_walk_inner(node_crr, pfunc);
+	}
+	else
 	{
 		fprintf(stderr, "A map structure was NULL...\n");
 		return -1;
 	}
 
-	if (node->left)
-	{
-		ants_map_walk(node->left);
-	}
-
-	if (node->right)
-	{
-		ants_map_walk(node->right);
-	}
+	fprintf(stdout, "Walking map was done....\n");
 	
 	return 0;
+}
+
+
+int ants_map_walk_inner(ants_map_node_t* node, void (*pfunc)(void*))
+{
+	if (node)
+	{
+		if (node->left)
+		{
+			ants_map_walk_inner(node->left, pfunc);
+		}
+
+		if (node->right)
+		{
+			ants_map_walk_inner(node->right, pfunc);
+		}
+
+		if (pfunc && node->data)
+		{
+			pfunc(node->data);
+		}
+	}
+
+	return 0;
+}
+
+
+int ants_map_walk_compare(ants_map_node_t* node_finding, ants_map_node_t* node_crr, int (*pfunc_compare)(void*, void*))
+{
+	int ret = 0;
+	
+	if (node_finding && node_crr && pfunc_compare)
+	{
+		ret = pfunc_compare(node_finding, node_crr);
+		if (ret == 0)
+		{
+			return 0;
+		}
+	}
+
+	return -1;
 }
 
 
