@@ -7,6 +7,8 @@
 #include <string.h>
 #include <openssl/md5.h>
 
+#define ANTS_MAP_FAILED  -1
+#define ANTS_MAP_SUCCESS 0
 
 #define ants_map_pushd(map, data, len) ants_map_push_with_data(map, data, len)
 #define ants_map_pushn(map, node)      ants_map_push_with_node(map, node)
@@ -30,7 +32,7 @@ typedef struct ants_map
 {
 	int cnt_nodes;
 	ants_map_node_t* root;
-	int (*cb_comapre)(void* data1, void* data2);
+	int (*cb_compare)(void* data1, void* data2);
 	
 } ants_map_t;
 
@@ -46,6 +48,7 @@ typedef struct st_temp st_temp_t;
 int ants_map_compare_default(void* data_prev, void* data_next);
 
 ants_map_t* ants_map_new(int (*fcompare)(void* data_prev, void* data_next));
+ants_map_node_t* ants_map_node_new(void* data, int len);
 unsigned char* ants_map_get_key(const void* data, const int len_data, int* len_md5);
 
 int ants_map_insert(ants_map_t* map, void* data, const int len);
