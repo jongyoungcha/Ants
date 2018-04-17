@@ -16,21 +16,34 @@ int main( int argc, char* argv[] )
 	};
 
 	lf_queue_t* queue = NULL;
-
+	qnode_t* pqnode = NULL;
 	
-	queue = init_queue("test_queue");
-
+	queue = ants_lfq_init_queue("test_queue");
 	for (i=0; i<5; i++)
 	{
-		ret = push_node(queue, arr_data[i], strlen(arr_data[i]));
+		ret = ants_lfq_push_node(queue, arr_data[i], strlen(arr_data[i]));
 		if (ret < 0)
 		{
 			fprintf(stderr, "push_node() error!!!\n");
 		}
 	}
+	ants_lfq_print_queue(queue);
+	
+	ants_lfq_pop_node(queue, &pqnode);
+	printf("%d %s\n", pqnode->len, pqnode->data);
+	ants_lfq_pop_node(queue, &pqnode);
+	printf("%d %s\n", pqnode->len, pqnode->data);
+	ants_lfq_pop_node(queue, &pqnode);
+	printf("%d %s\n", pqnode->len, pqnode->data);
+	ants_lfq_pop_node(queue, &pqnode);
+	printf("%d %s\n", pqnode->len, pqnode->data);
+	ants_lfq_pop_node(queue, &pqnode);
+	printf("%d %s\n", pqnode->len, pqnode->data);
 
-
-	print_queue(queue);
+	if ((ret = ants_lfq_pop_node(queue, &pqnode)) != 0)
+	{
+		fprintf(stderr, "push_node() error!!!\n");
+	}
 	
 	return 0;
 }
