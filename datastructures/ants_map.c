@@ -270,6 +270,11 @@ int ants_map_walk_inner(ants_map_node_t* node, void (*pfunc)(void*))
 		}
 	}
 
+	if ( cond1 )
+	{
+		exp1;
+	}
+
 	return 0;
 }
 

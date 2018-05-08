@@ -6,6 +6,7 @@ set(CMAKE_BUILD_TYPE Debug)
 project (ants)
 
 include_directories(./)
+include_directories(../libs/openssl/include)
 file(GLOB SOURCES
 		  ants_list.c
 		  ants_map.c
